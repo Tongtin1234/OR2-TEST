@@ -1,0 +1,60 @@
+# @format
+
+version: '3'
+services:
+  oasipdb:
+    image: oasipdbimage
+    build: ./database
+    container_name: oasipdb
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      LANG: C.UTF-8
+    networks:
+      - oasipnw_or2
+  oasipbackend:
+    image: oasipbackendimage
+    container_name: oasipbackend
+    build: ./oasip-services
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      DB_HOST: oasipdb
+      DB_USER: OR2
+      DB_PASSWORD: mysql
+      DB_NAME: oasip
+      DB_PORT: 3306
+    networks:
+      - oasipnw_or2
+    depends_on:
+      - oasipdb
+  oasipfrontend:
+    image: oasipfrontendimage
+    build: ./OAIP-OR-2-project
+    restart: always
+    container_name: oasipfrontend
+    depends_on:
+      - oasipdb
+      - oasipbackend
+    networks:
+      - oasipnw_or2
+  oasipreverseproxy:
+    image: reverseproxyimage
+    restart: always
+    container_name: oasipreverseproxy
+    build: ./reverseproxy
+    networks:
+      - oasipnw_or2
+    depends_on:
+      - oasipdb
+      - oasipbackend
+      - oasipfrontend
+    ports:
+      - '80:80'
+networks:
+  oasipnw_or2:
+    driver: bridge

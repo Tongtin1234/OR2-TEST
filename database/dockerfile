@@ -1,0 +1,4 @@
+FROM mysql
+COPY ./script /docker-entrypoint-initdb.d/
+ENV  MYSQL_ROOT_PASSWORD: mysql
+EXPOSE 3306:3306
