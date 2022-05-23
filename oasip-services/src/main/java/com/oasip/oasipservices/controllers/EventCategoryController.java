@@ -19,14 +19,13 @@ public class EventCategoryController {
     @Autowired
     private EventCategoryService eventCategoryService;
 
-
-    @GetMapping()
+    @GetMapping("")
     public List<EventCategoryDTO> getFullCategories() {
         return eventCategoryService.getFullCategories();
     }
 
-    @GetMapping("/forBooking")
-    public List<EventBookingCategoryDTO> getAllCategoriesForBooking() {
+    @GetMapping("/list")
+    public List<EventListCategoryDTO> getAllCategoriesForBooking() {
         return eventCategoryService.getAllCategoriesForBooking();
     }
 

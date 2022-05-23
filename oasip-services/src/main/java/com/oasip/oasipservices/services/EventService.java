@@ -35,27 +35,24 @@ public class EventService {
 
     public List<EventListDTO> getAllEvent() {
         List<Event> eventList = repository.findAllByOrderByEventStartTimeDesc();
-        return listMapper.mapList(eventList, EventListDTO.class, modelMapper);
-    }
+        return listMapper.mapList(eventList, EventListDTO.class, modelMapper);}
 
     public EventDTO getEventById(Integer id) {
         Event event = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Event id " + id +
                         "Does Not Exist !!!"));
-        return modelMapper.map(event, EventDTO.class);
-    }
+        return modelMapper.map(event, EventDTO.class);}
 
 
     public Integer delete(Integer id) {
         repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 id + " does not exist !!!"));
         repository.deleteById(id);
-        return id;
-    }
+        return id;}
 
 
-    public EventListDTO save(CreateNewEventDTO event) {
+    public EventDTO save(CreateNewEventDTO event) {
         Event newEvent = modelMapper.map(event, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(event.getCategoryId())
                 .orElseThrow(() -> new ResponseStatusException(
@@ -70,38 +67,29 @@ public class EventService {
         }
         checkConstraints(newEvent.getBookingName(),newEvent.getEventStartTime());
         repository.saveAndFlush(newEvent);
-        return modelMapper.map(newEvent, EventListDTO.class);
-    }
+        return modelMapper.map(newEvent, EventDTO.class);}
 
     public void checkConstraints(String bookingName, LocalDateTime eventStartTime){
         List<Event> constraintEvent = repository.findConstraintEvent(bookingName,eventStartTime);
         if(constraintEvent.size() >= 1){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"name and datetime is already booked");
-        }
-    }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"name and datetime is already booked");}}
 
     public LocalDateTime findEndDate(LocalDateTime eventStartTime, Integer duration) {
         LocalDateTime EventEndTime = eventStartTime.plusMinutes(duration);
-        return EventEndTime;
-    }
+        return EventEndTime;}
 
     public void overlappingEdit(Integer eventId,LocalDateTime newEventStartTime, LocalDateTime newEventEndTime){
         EventCategory category = eventCategoryRepository.findEventCategoryByEventId(eventId);
         List<Event> overlappingEvent = repository.findOverlappingEventForEdit(eventId,category.getCategoryId(),newEventStartTime,newEventEndTime);
-
         if(overlappingEvent.size() >= 1){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Editted time is overlapping");
-        }
-    }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Editted time is overlapping");}}
 
     public EditedEventDTO updateEvent(Event updateEvent, Integer id) {
         EventDTO oldEvent = getEventById(id);
         if(updateEvent.getEventNotes() == null ){
-            updateEvent.setEventNotes(oldEvent.getEventNotes());
-        }
+            updateEvent.setEventNotes(oldEvent.getEventNotes());}
         if(updateEvent.getEventStartTime() == null ){
-            updateEvent.setEventStartTime(oldEvent.getEventStartTime());
-        }
+            updateEvent.setEventStartTime(oldEvent.getEventStartTime());}
         overlappingEdit(id,updateEvent.getEventStartTime(),findEndDate(updateEvent.getEventStartTime(),oldEvent.getEventDuration()));
         Event editEvent = repository.findById(id).map(event -> {
             event.setEventNotes(updateEvent.getEventNotes().trim());
@@ -114,5 +102,4 @@ public class EventService {
         repository.saveAndFlush(editEvent);
         return modelMapper.map(editEvent, EditedEventDTO.class);
     }
-
 }

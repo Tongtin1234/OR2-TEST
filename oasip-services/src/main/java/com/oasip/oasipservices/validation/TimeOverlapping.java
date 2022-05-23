@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 @Constraint(validatedBy = TimeOverlappingValidator.class)
 @Documented
 public @interface TimeOverlapping{
-    String message() default "event start time is overlapping";
+    String message() default "eventStartTime : event start time is overlapping";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

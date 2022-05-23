@@ -27,8 +27,8 @@ onBeforeMount(async () => {
 
 // GET
 const getEvents = async () => {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/events`)
-  // const res = await fetch(`http://10.4.56.95:8080/api/events`)
+  // const res = await fetch(`${import.meta.env.BASE_URL}/api/events`)
+  const res = await fetch(`http://10.4.56.95:8080/api/events`)
   if (res.status === 200) {
     events.value = await res.json()
   } else {}
@@ -37,12 +37,12 @@ const getEvents = async () => {
 // DELETE
 const deleteEvent = async (deleteEventId) => {
   if (deleteEventId > 0) {
-    const res = await fetch(
-      `${import.meta.env.BASE_URL}/api/events/${deleteEventId}`,
-       {
-        // const res = await fetch(
-        //   `http://10.4.56.95:8080/api/events/${deleteEventId}`,
-        //   {
+    // const res = await fetch(
+    //   `${import.meta.env.BASE_URL}/api/events/${deleteEventId}`,
+    //    {
+        const res = await fetch(
+          `http://10.4.56.95:8080/api/events/${deleteEventId}`,
+          {
         method: 'DELETE'
       }
     )
@@ -65,12 +65,12 @@ const deleteEvent = async (deleteEventId) => {
 
 // GET
 const getCategories = async () => {
-  const res = await fetch(
-    `${import.meta.env.BASE_URL}/api/eventCategories/forBooking`
-  )
   // const res = await fetch(
-  //   `http://10.4.56.95:8080/api/eventCategories/forBooking`
+  //   `${import.meta.env.BASE_URL}/api/eventCategories/forBooking`
   // )
+  const res = await fetch(
+    `http://10.4.56.95:8080/api/eventCategories/forBooking`
+  )
   if (res.status === 200) {
     categories.value = await res.json()
   } else {}
@@ -81,12 +81,12 @@ const getCategories = async () => {
 const updateEvent = async (updateEvent) => {
   if(timesOverlap(updateEvent.eventStartTime,updateEvent.categoryName,updateEvent.duration,updateEvent.id)
   &&checkLengthNote(updateEvent.eventNotes)){
-  const res = await fetch(
-    `${import.meta.env.BASE_URL}/api/events/${updateEvent.id}`,
-    {
-      // const res = await fetch(
-      //   `http://10.4.56.95:8080/api/events/${updateEvent.id}`,
-      //   {
+  // const res = await fetch(
+  //   `${import.meta.env.BASE_URL}/api/events/${updateEvent.id}`,
+  //   {
+      const res = await fetch(
+        `http://10.4.56.95:8080/api/events/${updateEvent.id}`,
+        {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json'

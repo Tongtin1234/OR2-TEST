@@ -14,8 +14,8 @@ const errorDesc = ref([])
 
 // GET
 const getCategories = async () => {
-  const res = await fetch(`${import.meta.env.BASE_URL}/api/eventCategories`)
-  // const res = await fetch(`http://10.4.56.95:8080/api/eventCategories`)
+  // const res = await fetch(`${import.meta.env.BASE_URL}/api/eventCategories`)
+  const res = await fetch(`http://10.4.56.95:8080/api/eventCategories`)
   if (res.status === 200) {
     categories.value = await res.json()
   } else {}
@@ -40,12 +40,12 @@ const updateCategory = async (updateCategory) => {
     ) && 
     checkCategoryDescription(updateCategory.eventCategoryDescription)
   ) {
-    const res = await fetch(
-      `${import.meta.env.BASE_URL}/api/eventCategories/${updateCategory.categoryId}`,
-      {
-        // const res = await fetch(
-        //   `http://10.4.56.95:8080/api/eventCategories/${updateCategory.categoryId}`,
-        //   {
+    // const res = await fetch(
+    //   `${import.meta.env.BASE_URL}/api/eventCategories/${updateCategory.categoryId}`,
+    //   {
+        const res = await fetch(
+          `http://10.4.56.95:8080/api/eventCategories/${updateCategory.categoryId}`,
+          {
         method: 'PATCH',
         headers: {
           'content-type': 'application/json'

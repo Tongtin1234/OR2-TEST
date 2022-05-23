@@ -24,25 +24,23 @@ public class EventController {
 
     @GetMapping("")
     public List<EventListDTO> getAllEvents() {
-        return eventService.getAllEvent();
-    }
+        return eventService.getAllEvent();}
 
     @GetMapping("/{id}")
     public EventDTO getEventById(@PathVariable Integer id) {
-        return eventService.getEventById(id);
-    }
+        return eventService.getEventById(id);}
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventListDTO createNewEvent(@Valid @RequestBody CreateNewEventDTO event) {
+    public EventDTO createNewEvent(@Valid @RequestBody CreateNewEventDTO event) {
         return eventService.save(event);}
 
     @DeleteMapping("/{id}")
-    public Integer deleteEvent(@PathVariable Integer id) { return eventService.delete(id);}
+    public Integer deleteEvent(@PathVariable Integer id) {
+        return eventService.delete(id);}
 
     @PatchMapping("/{id}")
     public EditedEventDTO updateEvent(@RequestBody Event updateEvent, @PathVariable Integer id) {
         return eventService.updateEvent(updateEvent,id);}
-
 
 }

@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 
 public @interface ConstraintNameDate{
-    String message() default "Booking name and Event start time can't be same";
+    String message() default "bookingName, eventStartTime : Booking name and Event start time can't be same";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
